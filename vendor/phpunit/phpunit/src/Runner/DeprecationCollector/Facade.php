@@ -22,7 +22,8 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
  */
 final class Facade
 {
-    private static ?Collector $collector = null;
+    private static null|Collector|InIsolationCollector $collector = null;
+    private static bool $inIsolation                              = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -31,6 +32,13 @@ final class Facade
     public static function init(): void
     {
         self::collector();
+    }
+
+    public static function initForIsolation(): void
+    {
+        self::collector();
+
+        self::$inIsolation = true;
     }
 
     /**
@@ -59,16 +67,28 @@ final class Facade
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    private static function collector(): Collector
+    public static function collector(): Collector|InIsolationCollector
     {
-        if (self::$collector === null) {
-            self::$collector = new Collector(
-                EventFacade::instance(),
-                new IssueFilter(
-                    ConfigurationRegistry::get()->source(),
-                ),
-            );
+        if (self::$collector !== null) {
+            return self::$collector;
         }
+
+        $issueFilter = new IssueFilter(
+            ConfigurationRegistry::get()->source(),
+        );
+
+        if (self::$inIsolation) {
+            self::$collector = new InIsolationCollector(
+                $issueFilter,
+            );
+
+            return self::$collector;
+        }
+
+        self::$collector = new Collector(
+            EventFacade::instance(),
+            $issueFilter,
+        );
 
         return self::$collector;
     }

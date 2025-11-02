@@ -277,13 +277,13 @@ trait ValidatesAttributes
      * Get the date timestamp.
      *
      * @param  mixed  $value
-     * @return int
+     * @return int|null
      */
     protected function getDateTimestamp($value)
     {
         $date = is_null($value) ? null : $this->getDateTime($value);
 
-        return $date ? $date->getTimestamp() : null;
+        return $date?->getTimestamp();
     }
 
     /**
@@ -472,10 +472,9 @@ trait ValidatesAttributes
         $this->requireParameterCount(2, $parameters, 'between');
 
         try {
-            return with(
-                BigNumber::of($this->getSize($attribute, $value)),
-                fn ($size) => $size->isGreaterThanOrEqualTo($this->trim($parameters[0])) && $size->isLessThanOrEqualTo($this->trim($parameters[1]))
-            );
+            $size = BigNumber::of($this->getSize($attribute, $value));
+
+            return $size->isGreaterThanOrEqualTo($this->trim($parameters[0])) && $size->isLessThanOrEqualTo($this->trim($parameters[1]));
         } catch (MathException) {
             return false;
         }
@@ -529,6 +528,29 @@ trait ValidatesAttributes
 
         foreach ($parameters as $parameter) {
             if (! in_array($parameter, $value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate an attribute does not contain a list of values.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array<int, int|string>  $parameters
+     * @return bool
+     */
+    public function validateDoesntContain($attribute, $value, $parameters)
+    {
+        if (! is_array($value)) {
+            return false;
+        }
+
+        foreach ($parameters as $parameter) {
+            if (in_array($parameter, $value)) {
                 return false;
             }
         }
@@ -602,7 +624,7 @@ trait ValidatesAttributes
 
         foreach ($parameters as $format) {
             try {
-                $date = DateTime::createFromFormat('!'.$format, $value);
+                $date = DateTime::createFromFormat('!'.$format, $value, new DateTimeZone('UTC'));
 
                 if ($date && $date->format($format) == $value) {
                     return true;
@@ -699,8 +721,9 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(1, $parameters, 'digits');
 
-        return ! preg_match('/[^0-9]/', $value)
-                    && strlen((string) $value) == $parameters[0];
+        return (is_numeric($value) || is_string($value)) &&
+            ! preg_match('/[^0-9]/', $value) &&
+            strlen((string) $value) == $parameters[0];
     }
 
     /**
@@ -1531,10 +1554,15 @@ trait ValidatesAttributes
      *
      * @param  string  $attribute
      * @param  mixed  $value
+     * @param  array{0?: 'strict'}  $parameters
      * @return bool
      */
-    public function validateInteger($attribute, $value)
+    public function validateInteger($attribute, $value, array $parameters = [])
     {
+        if (($parameters[0] ?? null) === 'strict') {
+            return is_int($value);
+        }
+
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 
@@ -1603,13 +1631,7 @@ trait ValidatesAttributes
             return false;
         }
 
-        if (function_exists('json_validate')) {
-            return json_validate($value);
-        }
-
-        json_decode($value);
-
-        return json_last_error() === JSON_ERROR_NONE;
+        return json_validate($value);
     }
 
     /**

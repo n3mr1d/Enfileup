@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2023 Justin Hileman
+ * (c) 2012-2025 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +11,7 @@
 
 namespace Psy\Command;
 
+use Psy\ConfigPaths;
 use Psy\Input\FilterOptions;
 use Psy\Output\ShellOutput;
 use Psy\Readline\Readline;
@@ -125,7 +126,7 @@ HELP
         }
 
         if ($save = $input->getOption('save')) {
-            $output->writeln(\sprintf('Saving history in %s...', $save));
+            $output->writeln(\sprintf('Saving history in %s...', ConfigPaths::prettyPath($save)));
             \file_put_contents($save, \implode(\PHP_EOL, $history).\PHP_EOL);
             $output->writeln('<info>History saved.</info>');
         } elseif ($input->getOption('replay')) {
