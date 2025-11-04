@@ -11,7 +11,10 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "scrivo/highlight.php": "^9.18",
+        "spatie/laravel-markdown": "^2.7",
+        "stevebauman/purify": "^6.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
