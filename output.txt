@@ -1,0 +1,124 @@
+digraph "G" {
+style="filled"
+bgcolor="#F7F7F7"
+fontsize="12"
+labelloc="t"
+concentrate="1"
+splines="polyline"
+overlap=""
+nodesep="1"
+rankdir="LR"
+pad="0.5"
+ranksep="2"
+esep="1"
+fontname="Helvetica Neue"
+appmodelscommentanon:commentable_id -> appmodelscommentanon [
+label=" "
+xlabel="MorphTo
+commentable"
+color="#003049"
+penwidth="1.8"
+fontname="Helvetica Neue"
+]
+appmodelspastebin:id -> appmodelsslug:uploadable_id [
+label=" "
+xlabel="MorphOne
+slug"
+color="#003049"
+penwidth="1.8"
+fontname="Helvetica Neue"
+]
+appmodelspastebin:id -> appmodelscommentanon:commentable_id [
+label=" "
+xlabel="MorphMany
+commentuser"
+color="#003049"
+penwidth="1.8"
+fontname="Helvetica Neue"
+]
+appmodelsslug:uploadable_id -> appmodelsslug [
+label=" "
+xlabel="MorphTo
+uploadable"
+color="#003049"
+penwidth="1.8"
+fontname="Helvetica Neue"
+]
+"appmodelscommentanon" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">CommentAnon</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (bigint)</font></td></tr>
+<tr width="100%"><td port="username" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >username (varchar)</font></td></tr>
+<tr width="100%"><td port="content" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >content (longtext)</font></td></tr>
+<tr width="100%"><td port="commentable_type" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >commentable_type (varchar)</font></td></tr>
+<tr width="100%"><td port="commentable_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >commentable_id (bigint)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (timestamp)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (timestamp)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsfiles" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">Files</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (bigint)</font></td></tr>
+<tr width="100%"><td port="file_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >file_id (uuid)</font></td></tr>
+<tr width="100%"><td port="original_name" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >original_name (varchar)</font></td></tr>
+<tr width="100%"><td port="hash_name" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >hash_name (varchar)</font></td></tr>
+<tr width="100%"><td port="mime_type" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >mime_type (varchar)</font></td></tr>
+<tr width="100%"><td port="expired_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >expired_at (datetime)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (timestamp)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (timestamp)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelspastebin" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">Pastebin</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (bigint)</font></td></tr>
+<tr width="100%"><td port="title" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >title (varchar)</font></td></tr>
+<tr width="100%"><td port="url_pastebin" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >url_pastebin (varchar)</font></td></tr>
+<tr width="100%"><td port="is_protected" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >is_protected (tinyint)</font></td></tr>
+<tr width="100%"><td port="password" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >password (varchar)</font></td></tr>
+<tr width="100%"><td port="extension" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >extension (varchar)</font></td></tr>
+<tr width="100%"><td port="token_del" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >token_del (varchar)</font></td></tr>
+<tr width="100%"><td port="expire_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >expire_at (datetime)</font></td></tr>
+<tr width="100%"><td port="view" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >view (int)</font></td></tr>
+<tr width="100%"><td port="download" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >download (int)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (timestamp)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (timestamp)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsslug" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">Slug</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (bigint)</font></td></tr>
+<tr width="100%"><td port="uuid" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >uuid (uuid)</font></td></tr>
+<tr width="100%"><td port="uploadable_type" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >uploadable_type (varchar)</font></td></tr>
+<tr width="100%"><td port="uploadable_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >uploadable_id (bigint)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsuser" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">User</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (bigint)</font></td></tr>
+<tr width="100%"><td port="name" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >name (varchar)</font></td></tr>
+<tr width="100%"><td port="password" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >password (varchar)</font></td></tr>
+<tr width="100%"><td port="remember_token" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >remember_token (varchar)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (timestamp)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (timestamp)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+}

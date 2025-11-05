@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Purifier;
 use App\Enum\ExpireTime;
 use App\Models\Pastebin;
+use Highlight\Highlighter;
 use App\Http\Action\PastebinInput;
 use App\Http\Requests\PastebinForm;
-use Highlight\Highlighter;
+use Illuminate\Support\Facades\Crypt;
+use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
-use Stevebauman\Purify\Facades\Purify;
 
 class PastebinController extends Controller
 {
@@ -32,16 +33,13 @@ class PastebinController extends Controller
     {
         $pastebin = Pastebin::where('pastebin_id', $uuid)->first();
 
-        // File not found or gone
-        if (!$pastebin || !Storage::disk('public')->exists($pastebin->url_pastebin)) {
-            abort(404, 'Pastebin Not Found or Expired');
-        }
 
         // Count view
         $pastebin->incrementView();
 
         $title = $pastebin->title;
-        $content = Storage::disk('public')->get($pastebin->url_pastebin);
+        $contentenc = Storage::disk('public')->get($pastebin->url_pastebin);
+        $content = Crypt::decryptString($contentenc);
 
         // Return raw content with appropriate highlighting if needed
         $highlighted = null;
@@ -63,9 +61,6 @@ class PastebinController extends Controller
     {
         $pastebin = Pastebin::where('pastebin_id', $uuid)->first();
 
-        if (!$pastebin) {
-            abort(404, 'Pastebin Not Found or Expired');
-        }
         $pastebin->incrementDownload();
         return Storage::disk('public')->download($pastebin->url_pastebin, 'EnfileUp-' . $pastebin->title . '.' . $pastebin->extension);
     }
@@ -76,12 +71,9 @@ class PastebinController extends Controller
         // Get model pastebin from database
         $pastebin = Pastebin::where('pastebin_id', $uuid)->first();
 
-        // File not found or gone
-        if (!$pastebin || !Storage::disk('public')->exists($pastebin->url_pastebin)) {
-            abort(404, 'Pastebin Not Found or Expired');
-        }
 
-        $content = Storage::disk('public')->get($pastebin->url_pastebin);
+        $contentenc = Storage::disk('public')->get($pastebin->url_pastebin);
+        $content = Crypt::decryptString($contentenc);
 
         // Default markup if file is empty
         if (empty(trim($content))) {
@@ -104,11 +96,9 @@ class PastebinController extends Controller
     {
         //get information pastebin uuid 
         $pastebin = Pastebin::where('pastebin_id', $uuid)->first();
-        // File not found or gone
-        if (!$pastebin || !Storage::disk('public')->exists($pastebin->url_pastebin)) {
-            abort(404, 'Pastebin Not Found or Expired');
-        }
-        $content = Storage::disk('public')->get($pastebin->url_pastebin);
+
+        $contentenc = Storage::disk('public')->get($pastebin->url_pastebin);
+        $content = Crypt::decryptString($contentenc);
         if (empty(trim($content))) {
             $html = '<em>Empty file</em>';
         } else {

@@ -4,9 +4,10 @@ namespace App\Http\Action;
 
 use App\Enum\ExpireTime;
 use App\Models\Pastebin;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class PastebinInput
 {
@@ -26,7 +27,11 @@ class PastebinInput
             $extension = $request->support;
             // store file to server 
             $filePath = 'pastebin/' . $title . '.txt';
-            Storage::disk('public')->put($filePath, $content);
+            $contentenc = Crypt::encryptString($content);
+            Storage::disk('public')->put($filePath, $contentenc);
+            //generate token_del
+            $token_del = base64_encode($title . '_' . Str::random(10));
+
 
             // Simpan data ke database
             Pastebin::create([
@@ -37,6 +42,7 @@ class PastebinInput
                 'expire_at' => $expire,
                 'extension' => $extension,
                 'view' => 1,
+                'token_del' => $token_del,
                 'download' => 0,
             ]);
         }

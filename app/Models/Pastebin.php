@@ -12,11 +12,11 @@ class Pastebin extends Model
 
     protected $fillable = [
         'title',
-        'pastebin_id',
         'url_pastebin',
         'is_protected',
         'password',
         'expire_at',
+        'token_del',
         'view',
         'extension',
         'download',
@@ -29,6 +29,10 @@ class Pastebin extends Model
         'download' => 'integer',
     ];
 
+    public function needPassword()
+    {
+        return $this->is_protected && !empty($this->password);
+    }
     public function incrementView()
     {
         return $this->increment('view');
@@ -49,9 +53,12 @@ class Pastebin extends Model
             $this->attributes['is_protected'] = false;
         }
     }
-
+    public function slug()
+    {
+        return $this->morphOne(Slug::class, 'uploadable');
+    }
     public function commentuser()
     {
-        return $this->morphMany(CommentAnon::class, 'commentable');
+        return $this->morphMany(CommentAnon::class, 'commentable')->latest('created_at');
     }
 }

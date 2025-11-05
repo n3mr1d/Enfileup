@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 class CommentAnon extends Model
 {
@@ -12,8 +13,17 @@ class CommentAnon extends Model
         'username',
         'content',
 
-        'commentable',
+        'commentable_id',
+        'commentable_type'
     ];
+    public function setContentAttribute($value)
+    {
+        $this->attributes['content'] = Crypt::encryptString($value);
+    }
+    public function getContentAttribute($value)
+    {
+        return Crypt::decryptString($value);
+    }
 
     public function commentable()
     {

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('comment_anons', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
+            $table->string('username');
             $table->longText('content');
             $table->morphs('commentable');
             $table->timestamps();

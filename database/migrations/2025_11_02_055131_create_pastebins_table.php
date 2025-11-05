@@ -13,11 +13,11 @@ return new class extends Migration {
         Schema::create('pastebins', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->uuid('pastebin_id')->unique();
             $table->string('url_pastebin');
             $table->boolean('is_protected')->default(false);
             $table->string('password')->nullable();
             $table->string('extension')->default('md');
+            $table->string('token_del');
             $table->dateTime('expire_at')->nullable();
             $table->unsignedInteger('view')->default(0);
             $table->unsignedInteger('download')->default(0);
